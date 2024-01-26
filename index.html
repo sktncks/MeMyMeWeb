@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #222;
+    }
+
+    #card-container {
+      perspective: 1000px;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      width: 200px;
+      height: 300px;
+      position: absolute;
+      transform-style: preserve-3d;
+      cursor: pointer;
+      transition: transform 0.5s;
+      border-radius: 10px;
+    }
+
+    .card:hover {
+      transform: translateY(-20px) rotateX(20deg);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+    /*
+    .card.highlight {
+      box-shadow: 0 0 5px 5px rgba(255, 0, 0, 0.8);
+    }
+    /*
+    
+    /* Adjust the color and style as needed */
+    .card-face {
+      width: 100%;
+      height: 100%;
+      background-color: #3498db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      border-radius: 10px;
+      backface-visibility: hidden;
+    }
+    .card-face img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 이미지를 비율 유지하며 사각형에 맞추기 */
+      border-radius: 10px; /* 이미지 주위에 라운드 처리 */
+      backface-visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+
+<div id="card-container"></div>
+
+<script>
+  const cardContainer = document.getElementById('card-container');
+  const cardCount = 10;
+  const cards = [];
+  const cardRotationAngle = 360 / cardCount;
+
+  // 카드에 사용할 이미지 경로 배열
+  const imagePaths = [
+    "img/1.png",
+    "img/2.png",
+    "img/3.png",
+    "img/4.png",
+    "img/5.png",
+    "img/6.png",
+    "img/7.png",
+    "img/8.png",
+    "img/9.png",
+    "img/10.png"
+  ];
+
+  for (let i = 0; i < cardCount; i++) {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    // 이미지 경로 배열에서 각 카드에 해당하는 이미지 경로를 동적으로 할당
+    card.innerHTML = `<div class="card-face"><img src="${imagePaths[i]}"></div>`;
+    
+    card.style.transform = `rotateY(${i * cardRotationAngle}deg) translateZ(200px)`;
+    cardContainer.appendChild(card);
+    cards.push(card);
+  }
+
+  let highlightedCardIndex = 0;
+
+  function updateHighlight() {
+    cards.forEach((card, index) => {
+      const rotation = (index - highlightedCardIndex) * cardRotationAngle;
+      card.style.transform = `rotateY(${rotation}deg) translateZ(350px)`;
+      card.classList.remove('highlight');
+    });
+
+    cards[highlightedCardIndex].classList.add('highlight');
+  }
+
+  function handleWheel(event) {
+    const delta = event.deltaY;
+
+    if (delta > 0) {
+      // Scroll down
+      highlightedCardIndex = (highlightedCardIndex + 1) % cardCount;
+    } else {
+      // Scroll up
+      highlightedCardIndex = (highlightedCardIndex - 1 + cardCount) % cardCount;
+    }
+
+    updateHighlight();
+  }
+
+  cardContainer.addEventListener('wheel', handleWheel);
+  updateHighlight(); // Initial highlight
+</script>
+
+</body>
+</html>
