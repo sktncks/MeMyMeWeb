@@ -27,7 +27,7 @@
       transform-style: preserve-3d;
       cursor: pointer;
       transition: transform 0.5s;
-      border-radius: 10px;
+      border-radius: 10px; 
     }
 
     .card:hover {
@@ -107,7 +107,6 @@
       card.style.transform = `rotateY(${rotation}deg) translateZ(350px)`;
       card.classList.remove('highlight');
     });
-
     cards[highlightedCardIndex].classList.add('highlight');
   }
 
