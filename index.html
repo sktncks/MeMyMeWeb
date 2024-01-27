@@ -8,6 +8,7 @@
       margin: 0;
       overflow: hidden;
       background-color: #222;
+      font-family: Arial, sans-serif;
     }
 
     #card-container {
@@ -34,32 +35,37 @@
       transform: translateY(-20px) rotateX(20deg);
       box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
     }
-    /*
-    .card.highlight {
-      box-shadow: 0 0 5px 5px rgba(255, 0, 0, 0.8);
-    }
-    /*
-    
-    /* Adjust the color and style as needed */
-    .card-face {
+
+    .card-face, .card-face img {
       width: 100%;
       height: 100%;
-      background-color: #3498db;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
+      object-fit: cover;
       border-radius: 10px;
       backface-visibility: hidden;
     }
-    .card-face img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* 이미지를 비율 유지하며 사각형에 맞추기 */
-      border-radius: 10px; /* 이미지 주위에 라운드 처리 */
-      backface-visibility: hidden;
+
+    .description-box {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      padding: 15px;
+      background-color: #444;
+      box-shadow: 0 4px 8px rgba(175, 175, 175, 0.2);
+      border-radius: 10px;
+      display: left;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .description-item {
+      display: flex;
+      align-items: center;
+      margin-top: 7px;
+    }
+
+    .description-text {
+      margin-left: 10px;
+      color: white;
     }
   </style>
 </head>
@@ -67,34 +73,59 @@
 
 <div id="card-container"></div>
 
+<div class="description-box">
+  <div class="description-item">
+    <img src="img/wheel.png" alt="Wheel Icon" style="width: 24px; height: 37.6px; border-radius: 50%;">
+    <div class="description-text">
+      <b>Use wheel to rotate the cards</b>
+    </div>
+  </div>
+  <div class="description-item">
+    <img src="img/click.png" alt="Click Icon" style="width: 24px; height: 37.6px; border-radius: 50%;">
+    <div class="description-text">
+      <b>Use click to see the details</b>
+    </div>
+  </div>
+</div>
+
 <script>
   const cardContainer = document.getElementById('card-container');
   const cardCount = 10;
   const cards = [];
   const cardRotationAngle = 360 / cardCount;
-
-  // 카드에 사용할 이미지 경로 배열
   const imagePaths = [
-    "img/1.png",
-    "img/2.png",
-    "img/3.png",
-    "img/4.png",
-    "img/5.png",
-    "img/6.png",
-    "img/7.png",
-    "img/8.png",
-    "img/9.png",
-    "img/10.png"
+    "img/nopermission.png",
+    "img/resume.png",
+    "img/github.png",
+    "img/linkedin.png",
+    "img/rocketpunch.png",
+    "img/nopermission.png",
+    "img/nopermission.png",
+    "img/nopermission.png",
+    "img/nopermission.png",
+    "img/nopermission.png"
+  ];
+
+  // 각 카드에 대한 링크 배열
+  const cardLinks = [
+    "https://link1.com",
+    "https://link2.com",
+    "https://github.com/sktncks",
+    "https://www.linkedin.com/in/suchanna/",
+    "https://www.rocketpunch.com/@suchana4088",
+    "https://link6.com",
+    "https://link7.com",
+    "https://link8.com",
+    "https://link9.com",
+    "https://link10.com",
   ];
 
   for (let i = 0; i < cardCount; i++) {
     const card = document.createElement('div');
     card.className = 'card';
-
-    // 이미지 경로 배열에서 각 카드에 해당하는 이미지 경로를 동적으로 할당
-    card.innerHTML = `<div class="card-face"><img src="${imagePaths[i]}"></div>`;
-    
-    card.style.transform = `rotateY(${i * cardRotationAngle}deg) translateZ(200px)`;
+    /*target="_blank" 이 코드는 클릭시 새탭으로 이동하도록 해준다*/
+    card.innerHTML = `<a href="${cardLinks[i]}" target="_blank"><div class="card-face"><img src="${imagePaths[i]}" alt="Card ${i + 1}"></div></a>`;
+    card.style.transform = `rotateY(${i * cardRotationAngle}deg) translateZ(350px)`;
     cardContainer.appendChild(card);
     cards.push(card);
   }
@@ -112,15 +143,7 @@
 
   function handleWheel(event) {
     const delta = event.deltaY;
-
-    if (delta > 0) {
-      // Scroll down
-      highlightedCardIndex = (highlightedCardIndex + 1) % cardCount;
-    } else {
-      // Scroll up
-      highlightedCardIndex = (highlightedCardIndex - 1 + cardCount) % cardCount;
-    }
-
+    highlightedCardIndex = (highlightedCardIndex + (delta > 0 ? 1 : -1) + cardCount) % cardCount;
     updateHighlight();
   }
 
