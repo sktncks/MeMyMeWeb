@@ -11,65 +11,79 @@
       background-size: cover;
       font-family: Arial, sans-serif;
     }
-    #title {
-      background-color: black;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      cursor: pointer;
-      width: 100%;
-    }
-    #card-container, #top-box, #bottom-box, #vertical_box_mid_1, #vertical_box_mid_2, #vertical_box_left, #vertical_box_right {
-      position: fixed;
-      left: 0;
-      z-index: 10;
-    }
+
     #card-container {
       perspective: 1000px;
       width: 100vw;
       height: 100vh;
+      position: absolute;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    #top-box, #bottom-box {
-      width: 100%;
-      background-color: transparent;
+    
+    #title {
+        background-color: black; /* Replace with your desired color */
+        color: white; /* Or any color you want for the text */
+        text-align: center;
+        padding: 20px;
+        cursor: pointer;
+        width: 100%;
     }
-    #top-box {
-      top: 6.2%;
-      height: calc(50% - 240px);
-    }
+
+    #top-box,
     #bottom-box {
-      bottom: 14%;
-      height: calc(50% - 435px);
+        background-color: NONE;
+        position: fixed;
+        left: 0;
+        width: 100%;
+        z-index: 10; /* Ensure it's above other content but below the cards */
     }
-    #vertical_box_mid_1, #vertical_box_mid_2, #vertical_box_left, #vertical_box_right {
-      background-color: transparent;
-      height: calc(80%);
+
+    #top-box {
+        top: 6.2%;
+        height: calc(50% - 240px); /* Adjust 150px to half of your card height */
     }
-    #vertical_box_mid_1, #vertical_box_mid_2 {
-      width: 34px;
+
+    #bottom-box {
+        bottom: 14%;
+        height: calc(50% - 435px); /* Adjust 150px to half of your card height */
     }
-    #vertical_box_left, #vertical_box_right {
-      width: 26px;
+
+    #vertical_box_mid_1,
+    #vertical_box_mid_2,
+    #vertical_box_left,
+    #vertical_box_right {
+        background-color: NONE;
+        position: fixed;
+        left: 0;
+        z-index: 10; /* Ensure it's above other content but below the cards */
     }
     #vertical_box_mid_1 {
-      left: 58.4%;
-      top: 6.2%;
+        left: 58.4%;
+        top: 6.2%;
+        width: 34px;
+        height: calc(80%); /* Adjust 150px to half of your card height */
     }
     #vertical_box_mid_2 {
-      left: 39.8%;
-      top: 6.2%;
+        left: 39.8%;
+        top: 6.2%;
+        width: 34px;
+        height: calc(80%); /* Adjust 150px to half of your card height */
     }
     #vertical_box_left {
-      left: 28.5%;
-      top: 6.2%;
+        left: 28.5%;
+        top: 6.2%;
+        width: 26px;
+        height: calc(80%); /* Adjust 150px to half of your card height */
     }
     #vertical_box_right {
-      left: 70.1%;
-      top: 6.2%;
+        left: 70.1%;
+        top: 6.2%;
+        width: 26px;
+        height: calc(80%); /* Adjust 150px to half of your card height */
     }
+
     .card {
       width: 200px;
       height: 300px;
@@ -79,10 +93,12 @@
       transition: transform 0.5s;
       border-radius: 10px; 
     }
+
     .card:hover {
       transform: translateY(-20px) rotateX(20deg);
       box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
     }
+
     .card-face, .card-face img {
       width: 100%;
       height: 100%;
@@ -90,6 +106,7 @@
       border-radius: 10px;
       backface-visibility: hidden;
     }
+
     .description-box {
       position: fixed;
       bottom: 10px;
@@ -102,11 +119,13 @@
       flex-direction: column;
       align-items: flex-end;
     }
+
     .description-item {
       display: flex;
       align-items: center;
       margin-top: 7px;
     }
+
     .description-text {
       margin-left: 10px;
       color: white;
@@ -126,11 +145,15 @@
 <div class="description-box">
   <div class="description-item">
     <img src="img/wheel.png" alt="Wheel Icon" style="width: 24px; height: 37.6px; border-radius: 50%;">
-    <div class="description-text"><b>Use wheel to rotate the cards</b></div>
+    <div class="description-text">
+      <b>Use wheel to rotate the cards</b>
+    </div>
   </div>
   <div class="description-item">
     <img src="img/click.png" alt="Click Icon" style="width: 24px; height: 37.6px; border-radius: 50%;">
-    <div class="description-text"><b>Use click to see the details</b></div>
+    <div class="description-text">
+      <b>Use click to see the details</b>
+    </div>
   </div>
 </div>
 
@@ -140,18 +163,36 @@
   const cards = [];
   const cardRotationAngle = 360 / cardCount;
   const imagePaths = [
-    "img/aboutme.png", "img/resume.png", "img/github.png", "img/linkedin.png", "img/rocketpunch.png",
-    "img/nopermission.png", "img/nopermission.png", "img/nopermission.png", "img/nopermission.png", "img/nopermission.png"
+    "img/aboutme.png",
+    "img/resume.png",
+    "img/github.png",
+    "img/linkedin.png",
+    "img/rocketpunch.png",
+    "img/nopermission.png",
+    "img/nopermission.png",
+    "img/nopermission.png",
+    "img/nopermission.png",
+    "img/nopermission.png"
   ];
+
+  // 각 카드에 대한 링크 배열
   const cardLinks = [
-    "https://link1.com", "./Resume.pdf", "https://github.com/sktncks", "https://www.linkedin.com/in/suchanna/",
-    "https://www.rocketpunch.com/@suchana4088", "https://link6.com", "https://link7.com", "https://link8.com",
-    "https://link9.com", "https://link10.com"
+    "https://link1.com",
+    "./Resume.pdf",
+    "https://github.com/sktncks",
+    "https://www.linkedin.com/in/suchanna/",
+    "https://www.rocketpunch.com/@suchana4088",
+    "https://link6.com",
+    "https://link7.com",
+    "https://link8.com",
+    "https://link9.com",
+    "https://link10.com",
   ];
 
   for (let i = 0; i < cardCount; i++) {
     const card = document.createElement('div');
     card.className = 'card';
+    /*target="_blank" 이 코드는 클릭시 새탭으로 이동하도록 해준다*/
     card.innerHTML = `<a href="${cardLinks[i]}" target="_blank"><div class="card-face"><img src="${imagePaths[i]}" alt="Card ${i + 1}"></div></a>`;
     card.style.transform = `rotateY(${i * cardRotationAngle}deg) translateZ(350px)`;
     cardContainer.appendChild(card);
@@ -164,16 +205,20 @@
     cards.forEach((card, index) => {
       const rotation = (index - highlightedCardIndex) * cardRotationAngle;
       card.style.transform = `rotateY(${rotation}deg) translateZ(350px)`;
-      card.classList.toggle('highlight', index === highlightedCardIndex);
+      card.classList.remove('highlight');
     });
+    cards[highlightedCardIndex].classList.add('highlight');
   }
 
-  cardContainer.addEventListener('wheel', event => {
-    highlightedCardIndex = (highlightedCardIndex + (event.deltaY > 0 ? 1 : -1) + cardCount) % cardCount;
+  function handleWheel(event) {
+    const delta = event.deltaY;
+    highlightedCardIndex = (highlightedCardIndex + (delta > 0 ? 1 : -1) + cardCount) % cardCount;
     updateHighlight();
-  });
+  }
 
+  cardContainer.addEventListener('wheel', handleWheel);
   updateHighlight(); // Initial highlight
 </script>
+
 </body>
 </html>
